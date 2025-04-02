@@ -102,9 +102,9 @@ A avaliação foi realizada com base nas seguintes métricas:
 
 Se você tiver alguma dúvida ou quiser discutir mais sobre a matéria, pode me contactar:
 
-- **E-mail**: wisleycesar032@gmail.com
-- **GitHub**: [@wisley-cesar](https://github.com/wisley-cesar)
-
+- 📧 **Email:** _wisleycesar032@gmail.com_  
+- 🔰 **GitHub:** [wisley-cesar](https://github.com/wisley-cesar)  
+- 🔗 LinkedIn: [Wisley César](https://www.linkedin.com/in/wisley-césar)
 ---
 
 ## 🎨 Agradecimentos
