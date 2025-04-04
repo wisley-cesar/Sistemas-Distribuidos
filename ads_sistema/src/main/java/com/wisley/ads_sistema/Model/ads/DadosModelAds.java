@@ -46,7 +46,9 @@ public record DadosModelAds(
         Boolean preciNegoTiable,
 
         @Min(value = 0, message = "As visualizações não podem ser negativas")
-        int views
+        int views,
+        @NotNull
+        boolean ativo
 
 
 ) {

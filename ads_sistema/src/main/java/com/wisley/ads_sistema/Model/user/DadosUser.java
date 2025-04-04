@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record DadosUser(
@@ -21,7 +22,10 @@ public record DadosUser(
         @NotBlank(message = "O endereço é obrigatório")
         String address,
 
-        String token
+        String token,
+        
+        @NotNull(message = "O ativo é obrigatorio")
+        boolean ativo
 ){
 
 }

@@ -3,8 +3,12 @@ package com.wisley.ads_sistema.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,14 +38,21 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryModel> listar (){
-        return categoryRepository.findAll();
+    public Page<DadosCategory> listar (Pageable paginacao) {
+        return categoryRepository.findAllByAtivoTrue(paginacao).map(DadosCategory::new);
     }
 
     @PutMapping
     public void atualizarInformacoesCategory(@RequestBody @Valid DadosCategory dadosCategory) {
         CategoryModel categoryModel = categoryRepository.findById(dadosCategory.id()).orElseThrow(() -> new RuntimeException("Id não encontrado"));
         categoryModel.atualizarInformacoesCategory(dadosCategory);
+        categoryRepository.save(categoryModel);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletrar( @PathVariable String id) {
+        CategoryModel categoryModel = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado"));
+        categoryModel.excluir();
         categoryRepository.save(categoryModel);
     }
 

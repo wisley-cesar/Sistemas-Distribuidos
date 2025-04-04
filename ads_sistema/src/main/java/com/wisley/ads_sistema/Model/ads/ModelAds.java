@@ -5,10 +5,14 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.wisley.ads_sistema.Model.states.ListagemStates;
 import com.wisley.ads_sistema.Model.states.StatesModel;
 
 import jakarta.validation.constraints.NotNull;
-
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Document(collection = "ads")
 public class ModelAds {
 
@@ -17,7 +21,6 @@ public class ModelAds {
     private String image;
     @NotNull
     private String idUser; // Agora apenas uma String
-
     private LocalDateTime creatAt = LocalDateTime.now();
     private StatesModel states;
     private String title;
@@ -25,7 +28,7 @@ public class ModelAds {
     private String category;
     private Boolean priceNegotiable;
     private int views = 0;
-
+    private boolean ativo;
     public ModelAds() {
     }
 
@@ -57,88 +60,15 @@ public class ModelAds {
         if (dadadosAtualizacaoAds.states() != null) {
             this.states.atualizarInformacoesStates(dadadosAtualizacaoAds.states());
         }
+
     }
 
-    // Getters e Setters
 
-    public String getIdUser() {
-        return idUser;
+    public void excluir() {
+        this.ativo = false;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
-    }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public LocalDateTime getCreatAt() {
-        return creatAt;
-    }
-
-    public void setCreatAt(LocalDateTime creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Boolean getPriceNegotiable() {
-        return priceNegotiable;
-    }
-
-    public void setPriceNegotiable(Boolean priceNegotiable) {
-        this.priceNegotiable = priceNegotiable;
-    }
-
-    public StatesModel getStates() {
-        return states;
-    }
-
-    public void setStates(StatesModel states) {
-        this.states = states;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getViews() {
-        return views;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
-    }
+    
 }
 // Compare this snippet from src/main/java/com/wisley/ads_sistema/Model/DadosCadastroStates.java:

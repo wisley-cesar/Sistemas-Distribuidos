@@ -3,6 +3,11 @@ package com.wisley.ads_sistema.Model.category;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Document("Category")
 public class CategoryModel {
     @Id
@@ -11,6 +16,8 @@ public class CategoryModel {
     private String name;
 
     private  String slug;
+
+    private boolean ativo;
 
     public CategoryModel() {
     }
@@ -21,29 +28,6 @@ public class CategoryModel {
         this.slug = dadosCategory.slug();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
 
     public void atualizarInformacoesCategory(DadosCategory dadosCategory) {
         if (dadosCategory.name() != null) {
@@ -52,5 +36,10 @@ public class CategoryModel {
         if (dadosCategory.slug() != null) {
             this.slug = dadosCategory.slug();
         }
+    }
+
+
+    public void excluir() {
+      this.ativo = false;
     }
 }

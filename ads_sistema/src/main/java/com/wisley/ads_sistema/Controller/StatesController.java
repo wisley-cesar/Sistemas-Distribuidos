@@ -1,6 +1,7 @@
 package com.wisley.ads_sistema.Controller;
 
 import com.wisley.ads_sistema.Model.states.DadosCadastroStates;
+import com.wisley.ads_sistema.Model.states.ListagemStates;
 import com.wisley.ads_sistema.Model.states.StatesModel;
 import com.wisley.ads_sistema.Repository.StatesRepository;
 import jakarta.validation.Valid;
@@ -32,9 +33,17 @@ public class StatesController {
 
     @PutMapping
     @Transactional
-    public void atualizarInformacoesStates(StatesModel dados) {
-        StatesModel statesModel = statesRepository.findById(dados.getId()).orElseThrow(() -> new RuntimeException("Id não encontrado"));
+    public void atualizarInformacoesStates(@Valid @RequestBody ListagemStates dados) {
+
+        StatesModel statesModel = statesRepository.findById(dados.id()).orElseThrow(() -> new RuntimeException("Id não encontrado"));
         statesModel.atualizarInformacoesStates(dados);
+        statesRepository.save(statesModel);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable String id) {
+        StatesModel statesModel = statesRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado"));
+        statesModel.excluir();
         statesRepository.save(statesModel);
     }
 }

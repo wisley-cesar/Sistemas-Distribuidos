@@ -1,7 +1,7 @@
 package com.wisley.ads_sistema.Model.ads;
 
 import com.mongodb.lang.NonNull;
-import com.wisley.ads_sistema.Model.states.StatesModel;
+import com.wisley.ads_sistema.Model.states.ListagemStates;
 
 public record DadadosAtualizacaoAds(
     @NonNull       
@@ -12,7 +12,7 @@ public record DadadosAtualizacaoAds(
         String userName,
         String email,
         String image,
-        StatesModel states
+        ListagemStates states
 ) {
     
 

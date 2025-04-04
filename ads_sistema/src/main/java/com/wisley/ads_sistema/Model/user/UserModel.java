@@ -3,6 +3,11 @@ package com.wisley.ads_sistema.Model.user;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Document(collection = "User")
 public class UserModel {
     @Id
@@ -15,10 +20,13 @@ public class UserModel {
 
     private String token;
 
+    private boolean ativo; 
+
     public UserModel() {
     }
 
     public UserModel(DadosUser dadosUser) {
+        this.ativo = true;
         this.email = dadosUser.email();
         this.id = dadosUser.id();
         this.password = dadosUser.password();
@@ -32,45 +40,6 @@ public class UserModel {
         this.email = dadosUserAtualizacao.email();
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public void atualizarInformacoesUser(DadosUserAtualizacao dadosUser) {
         if (dadosUser.userName() != null) {
@@ -79,8 +48,18 @@ public class UserModel {
         if (dadosUser.email() != null) {
             this.email = dadosUser.email();
         }
-       
-        
+         
+    }
+
+    public void excluir() {
+        this.ativo = false;
+      
+    }
+    public boolean isAtivo() {
+        return ativo;
+    }
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
     
 
