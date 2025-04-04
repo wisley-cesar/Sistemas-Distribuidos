@@ -6,6 +6,8 @@ import com.wisley.ads_sistema.Model.states.StatesModel;
 import com.wisley.ads_sistema.Repository.StatesRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,8 @@ public class StatesController {
     }
 
     @GetMapping
-    public List<StatesModel> listar(){
-        return statesRepository.findAll();
+    public Page<ListagemStates> listar(Pageable paginacao) {
+        return statesRepository.findAllByAtivoTrue(paginacao).map(ListagemStates::new);
     }
 
     @PutMapping
