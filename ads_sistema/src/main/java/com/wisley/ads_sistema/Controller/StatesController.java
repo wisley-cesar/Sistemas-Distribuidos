@@ -1,7 +1,7 @@
 package com.wisley.ads_sistema.Controller;
 
-import com.wisley.ads_sistema.Model.DadosCadastroStates;
-import com.wisley.ads_sistema.Model.StatesModel;
+import com.wisley.ads_sistema.Model.states.DadosCadastroStates;
+import com.wisley.ads_sistema.Model.states.StatesModel;
 import com.wisley.ads_sistema.Repository.StatesRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +28,13 @@ public class StatesController {
     @GetMapping
     public List<StatesModel> listar(){
         return statesRepository.findAll();
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizarInformacoesStates(StatesModel dados) {
+        StatesModel statesModel = statesRepository.findById(dados.getId()).orElseThrow(() -> new RuntimeException("Id não encontrado"));
+        statesModel.atualizarInformacoesStates(dados);
+        statesRepository.save(statesModel);
     }
 }

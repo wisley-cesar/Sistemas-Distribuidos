@@ -1,7 +1,8 @@
-package com.wisley.ads_sistema.Model;
+package com.wisley.ads_sistema.Model.states;
+
+import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.annotation.Id;
 
 public record DadosCadastroStates(
         @Id

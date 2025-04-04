@@ -1,4 +1,4 @@
-package com.wisley.ads_sistema.Model;
+package com.wisley.ads_sistema.Model.user;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +24,12 @@ public class UserModel {
         this.password = dadosUser.password();
         this.token = dadosUser.token();
         this.userName = dadosUser.userName();
+    }
+    
+    public UserModel(DadosUserAtualizacao dadosUserAtualizacao) {
+        this.id = dadosUserAtualizacao.id();
+        this.userName = dadosUserAtualizacao.userName();
+        this.email = dadosUserAtualizacao.email();
     }
 
     public String getEmail() {
@@ -65,4 +71,17 @@ public class UserModel {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    public void atualizarInformacoesUser(DadosUserAtualizacao dadosUser) {
+        if (dadosUser.userName() != null) {
+            this.userName = dadosUser.userName();
+        }
+        if (dadosUser.email() != null) {
+            this.email = dadosUser.email();
+        }
+       
+        
+    }
+    
+
 }

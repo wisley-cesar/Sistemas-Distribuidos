@@ -1,9 +1,10 @@
-package com.wisley.ads_sistema.Model;
+package com.wisley.ads_sistema.Model.user;
+
+import org.springframework.data.annotation.Id;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.springframework.data.annotation.Id;
 
 public record DadosUser(
         @Id

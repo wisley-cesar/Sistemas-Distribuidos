@@ -1,4 +1,4 @@
-package com.wisley.ads_sistema.Model;
+package com.wisley.ads_sistema.Model.category;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -43,5 +43,14 @@ public class CategoryModel {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public void atualizarInformacoesCategory(DadosCategory dadosCategory) {
+        if (dadosCategory.name() != null) {
+            this.name = dadosCategory.name();
+        }
+        if (dadosCategory.slug() != null) {
+            this.slug = dadosCategory.slug();
+        }
     }
 }

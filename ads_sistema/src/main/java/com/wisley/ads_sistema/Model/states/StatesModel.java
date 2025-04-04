@@ -1,10 +1,15 @@
-package com.wisley.ads_sistema.Model;
+package com.wisley.ads_sistema.Model.states;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "States")
 public class StatesModel {
+    
+    @Id
+    private String id;
+
+    private String nome;
 
     public StatesModel() {
     }
@@ -13,10 +18,6 @@ public class StatesModel {
         this.nome = dadosCadastroStates.nome();
         this.id = dadosCadastroStates.id();
     }
-    @Id
-    private String id;
-
-    private String nome;
 
 
     public String getNome() {
@@ -33,5 +34,11 @@ public class StatesModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void atualizarInformacoesStates(StatesModel statesModel) {
+        if (statesModel.nome != null) {
+            this.nome = statesModel.nome;
+        }
     }
 }

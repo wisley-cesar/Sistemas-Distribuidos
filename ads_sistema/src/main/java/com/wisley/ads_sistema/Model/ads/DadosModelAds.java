@@ -1,12 +1,16 @@
-package com.wisley.ads_sistema.Model;
+package com.wisley.ads_sistema.Model.ads;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import com.wisley.ads_sistema.Model.states.StatesModel;
+import com.wisley.ads_sistema.Model.user.UserModel;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
-import java.time.LocalDateTime;
 
 public record DadosModelAds(
         @NotBlank(message = "A imagem é obrigatória")
