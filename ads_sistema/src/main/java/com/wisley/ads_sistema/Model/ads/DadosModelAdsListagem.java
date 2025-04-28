@@ -1,13 +1,11 @@
 package com.wisley.ads_sistema.Model.ads;
 
-import java.lang.Thread.State;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 
 import com.wisley.ads_sistema.Model.states.StatesModel;
 
-import jakarta.validation.constraints.NotNull;
 
 public record DadosModelAdsListagem(
         @Id
