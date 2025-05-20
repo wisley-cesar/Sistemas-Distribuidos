@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.passageiro.DadosAtualizacaoPassageiro;
@@ -13,6 +14,7 @@ import com.example.demo.repository.PassageiroRepository;
 import com.example.demo.service.passageiro.PassageiroService;
 
 import jakarta.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/passageiros")
@@ -27,9 +29,13 @@ public class PassageiroController {
     }
 
     @PostMapping
-    public void cadastrarPassageiro(@Valid @RequestBody DadosCadastroPassageiro dadosCadastro) {
-        Passageiro passageiro = new Passageiro(dadosCadastro);
-        passageiroRepository.save(passageiro);
+    public ResponseEntity<?> cadastrarPassageiro(@Valid @RequestBody DadosCadastroPassageiro dadosCadastro) {
+        try {
+            passageiroService.cadastrarPassageiro(dadosCadastro);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping
@@ -40,6 +46,23 @@ public class PassageiroController {
     @PatchMapping("/{id}/status-check-in")
     public Passageiro atualizarStatusCheckIn(@PathVariable String id, @RequestParam StatusCheckIn statusCheckIn) {
         return passageiroService.atualizarStatusCheckIn(id, statusCheckIn);
+    }
+
+    @PutMapping("/{id}/status-check-in")
+    public ResponseEntity<?> atualizarStatusCheckInPut(@PathVariable String id, @RequestBody Map<String, String> body) {
+        String statusStr = body.get("statusCheckIn");
+        if (statusStr == null) {
+            return ResponseEntity.badRequest().body("Status de Check-in não informado no body.");
+        }
+        try {
+            StatusCheckIn novoStatus = StatusCheckIn.valueOf(statusStr.toUpperCase());
+            Passageiro passageiroAtualizado = passageiroService.atualizarStatusCheckIn(id, novoStatus);
+            return ResponseEntity.ok(passageiroAtualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Status de Check-in inválido.");
+        } catch (RuntimeException e) {
+             return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

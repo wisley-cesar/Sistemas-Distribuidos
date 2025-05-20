@@ -5,7 +5,7 @@ public record PortaoListagem(
         Boolean disponivel
 ) {
     public PortaoListagem(Portao portao) {
-        this(portao.getCodigo(), portao.getDisponivel());
+        this(portao.getCodigo(), portao.isDisponivel());
     }
 
     

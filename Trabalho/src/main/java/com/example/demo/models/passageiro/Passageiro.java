@@ -15,24 +15,24 @@ public class Passageiro {
     private String nome;
     private String cpf;
     private Voo idVoo;
-    private StatusCheckIn StatusCheckIn;
+    private StatusCheckIn statusCheckIn;
     private boolean ativo = true;
     
 
     
 
-    public Passageiro(String id, String nome, String cpf, Voo idVoo, StatusCheckIn StatusCheckIn) {
+    public Passageiro(String id, String nome, String cpf, Voo idVoo, StatusCheckIn statusCheckIn) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.idVoo = idVoo;
-        this.StatusCheckIn = StatusCheckIn;
+        this.statusCheckIn = statusCheckIn;
     }
     public Passageiro(DadosCadastroPassageiro dados) {
         this.nome = dados.nome();
         this.cpf = dados.cpf();
         this.idVoo = dados.idVoo();
-        this.StatusCheckIn = dados.statusCheckIn();
+        this.statusCheckIn = dados.statusCheckIn();
     }
 
     public Passageiro(PassageiroListagem passageiroListagem){
@@ -40,7 +40,7 @@ public class Passageiro {
         this.nome = passageiroListagem.nome();
         this.cpf = passageiroListagem.cpf();
         this.idVoo = passageiroListagem.idVoo();
-        this.StatusCheckIn = passageiroListagem.statusCheckIn();
+        this.statusCheckIn = passageiroListagem.statusCheckIn();
     }
     public Passageiro() {}
     
@@ -56,7 +56,7 @@ public class Passageiro {
             this.idVoo = dados.idVoo();
         }
         if (dados.statusCheckIn() != null) {
-            this.StatusCheckIn = dados.statusCheckIn();
+            this.statusCheckIn = dados.statusCheckIn();
         }
     }
 

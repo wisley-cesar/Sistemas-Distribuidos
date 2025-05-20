@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.example.demo.models.passageiro.Passageiro;
 import com.example.demo.models.portao_embarque.Portao;
+import java.util.Optional;
 
 public interface PortaoRepository extends MongoRepository<Portao, String> {
     Page<Passageiro> findAllByAtivoTrue(Pageable paginacao);
-
-    
+    Optional<Portao> findByCodigo(String codigo);
 }

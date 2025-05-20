@@ -2,11 +2,9 @@ package com.example.demo.models.voo;
 
 import com.example.demo.models.portao_embarque.Portao;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Voo {
     private String id;
     private Integer numeroVoo;
@@ -15,7 +13,7 @@ public class Voo {
     private String dataHoraPartida;
     private Portao idPortao;
     private StatusVoo status;
-    private boolean isAtivo = true;
+    private boolean ativo = true;
 
     public Voo(String id, Integer numeroVoo, String origem, String destino, String dataHoraPartida, Portao idPortao, StatusVoo status) {
         this.id = id;
@@ -50,8 +48,6 @@ public class Voo {
         
     }
 
-
-
     public void atualizarVoo(DadosAtualizacaoVoo dados) {
         if (dados.numeroVoo() != null) {
             this.numeroVoo = dados.numeroVoo();
@@ -72,5 +68,4 @@ public class Voo {
             this.status = dados.status();
         }
     }
-    
 }
