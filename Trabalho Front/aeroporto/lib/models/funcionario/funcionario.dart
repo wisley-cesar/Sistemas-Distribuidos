@@ -30,7 +30,7 @@ class Funcionario {
       'id': id,
       'nome': nome,
       'email': email,
-      'cargo': nome,
+      'cargo': cargo,
     };
   }
 }

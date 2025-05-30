@@ -1,22 +1,22 @@
 class CadastroFuncionario {
+  final String id;
   final String nome;
   final String email;
-  final String telefone;
   final String cargo;
   final String senha;
 
   CadastroFuncionario({
+    required this.id,
     required this.nome,
     required this.email,
-    required this.telefone,
     required this.cargo,
     required this.senha,
   });
 
   CadastroFuncionario.fromJson(Map<String, dynamic> json)
     : nome = json['nome'],
+      id = json['id'],
       email = json['email'],
-      telefone = json['telefone'],
       cargo = json['cargo'],
       senha = json['senha'];
 
@@ -24,14 +24,13 @@ class CadastroFuncionario {
     return {
       'nome': nome,
       'email': email,
-      'telefone': telefone,
-      'cargo': nome,
+      'cargo': cargo,
       'senha': senha,
     };
   }
 
   @override
   String toString() {
-    return 'CadastroFuncionario{nome: $nome, email: $email, telefone: $telefone, cargo: $cargo, senha: $senha}';
+    return 'CadastroFuncionario{nome: $nome, email: $email,cargo: $cargo, senha: $senha}';
   }
 }

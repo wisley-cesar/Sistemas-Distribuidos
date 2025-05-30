@@ -72,8 +72,30 @@ class ApiServiceFuncionario {
     }
   }
 
-  Future<void> atualizarFuncionario(Funcionario funcionario) async {
-    final url = Uri.parse("$_baseUrl/${funcionario.id}");
+  Future<Funcionario> buscarFuncionarioPorId(String id) async {
+    final url = Uri.parse('$_baseUrl/$id');
+
+    final response = await http.get(
+      url,
+
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return Funcionario.fromJson(json);
+    } else {
+      print('Erro ao buscar funcionário: ${response.statusCode}');
+      throw Exception('Erro ao buscar funcionário');
+    }
+  }
+
+  Future<void> atualizarFuncionario(
+    CadastroFuncionario cadastroFuncionario,
+  ) async {
+    final url = Uri.parse("$_baseUrl/${cadastroFuncionario.id}");
 
     final response = await http.put(
       url,
@@ -81,11 +103,31 @@ class ApiServiceFuncionario {
         'Content-Type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
       },
+      body: jsonEncode(cadastroFuncionario.toJson()),
     );
     if (response.statusCode == 200) {
-      print('Funcionário atualizado com sucesso: ${funcionario.nome}');
+      print('Funcionário atualizado com sucesso: ${cadastroFuncionario.nome}');
     } else {
       print('Erro ao atualizar funcionário: ${response.statusCode}');
+      print('Resposta: ${response.body}');
+    }
+  }
+
+  Future<void> excluirFuncionario(String id) async {
+    final url = Uri.parse("$_baseUrl/$id");
+
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print('Funcionário excluído com sucesso');
+    } else {
+      print('Erro ao excluir funcionário: ${response.statusCode}');
+      print('Resposta: ${response.body}');
     }
   }
 }
