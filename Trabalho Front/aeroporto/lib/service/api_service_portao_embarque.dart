@@ -9,6 +9,7 @@ class ApiServicePortaoEmbarque {
   static const String _baseUrl = 'http://localhost:8080/portoes';
 
   ApiServiceFuncionario apiServiceFuncionario = Get.find();
+
   Future<void> cadastrarPortaoEmbarque(PortaoEmbarqueCadastro portao) async {
     String? token = Get.find<ApiServiceFuncionario>().getToken();
     print('esse é token $token');
@@ -30,4 +31,35 @@ class ApiServicePortaoEmbarque {
       print('Resposta: ${response.body}');
     }
   }
+
+  Future<List<PortaoEmbarqueCadastro>> listarPortoesEmbarque() async {
+    String? token = Get.find<ApiServiceFuncionario>().getToken();
+    final url = Uri.parse("$_baseUrl");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map<String, dynamic> && decoded.containsKey('portoes')) {
+        final List<dynamic> data = decoded['portoes'];
+        return data
+            .map((portao) => PortaoEmbarqueCadastro.fromJson(portao))
+            .toList();
+      } else {
+        print('Formato inesperado da resposta: $decoded');
+        return [];
+      }
+    } else {
+      print('Erro ao listar portões de embarque: ${response.statusCode}');
+      print('Resposta: ${response.body}');
+      return [];
+    }
+  }
+  
 }

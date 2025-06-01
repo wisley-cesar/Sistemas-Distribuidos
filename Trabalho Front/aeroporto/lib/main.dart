@@ -28,9 +28,7 @@ void main() async {
 
   await api.fazerLogin(funcionario.senha, funcionario.email);
 
-  await api_portao.cadastrarPortaoEmbarque(
-    PortaoEmbarqueCadastro(codigo: 'T9', disponivel: true),
-  );
+  await api_portao.listarPortoesEmbarque();
 
   // await api.cadastrarFuncionario(funcionario);
 
