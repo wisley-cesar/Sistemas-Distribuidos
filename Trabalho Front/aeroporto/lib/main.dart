@@ -29,16 +29,17 @@ void main() async {
 
   await api.fazerLogin(funcionario.senha, funcionario.email);
 
-  await api_portao.listarPortoesEmbarque();
+  // await api_portao.listarPortoesEmbarque();
 
-  await api_portao.atualizarPortaoEmbarque(
-    PortaoEmbarque(
-      id: '6834509a14b43f04c5b05f56',
-      codigo: 'A&7',
-      disponivel: true,
-      ativo: true,
-    ),
-  );
+  // await api_portao.atualizarPortaoEmbarque(
+  //   PortaoEmbarque(
+  //     id: '6834509a14b43f04c5b05f56',
+  //     codigo: 'A&7',
+  //     disponivel: true,
+  //     ativo: true,
+  //   ),
+  // );
+  await api_portao.excluirPortaoEmbarque('683b48d2b4dfba64c008949e');
 
   // await api.cadastrarFuncionario(funcionario);
 

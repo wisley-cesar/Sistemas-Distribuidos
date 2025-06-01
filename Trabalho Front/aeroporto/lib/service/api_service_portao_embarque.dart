@@ -82,4 +82,23 @@ class ApiServicePortaoEmbarque {
       print('Resposta: ${response.body}');
     }
   }
+
+  Future<void> excluirPortaoEmbarque(String id) async {
+    String? token = Get.find<ApiServiceFuncionario>().getToken();
+
+    final url = Uri.parse("$_baseUrl/$id");
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200) {
+      print('Portão de embarque excluído com sucesso: $id');
+    } else {
+      print('Erro ao excluir portão de embarque: ${response.statusCode}');
+      print('Resposta: ${response.body}');
+    }
+  }
 }
