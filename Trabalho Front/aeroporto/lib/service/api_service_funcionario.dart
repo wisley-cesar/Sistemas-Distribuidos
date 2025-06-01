@@ -3,11 +3,16 @@ import 'dart:convert';
 import 'package:aeroporto/models/funcionario/cadastro_funcionario.dart';
 import 'package:aeroporto/models/funcionario/funcionario.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 
-class ApiServiceFuncionario {
+class ApiServiceFuncionario extends GetxController {
   static const String _baseUrl = "http://localhost:8080/funcionarios";
 
   String? token;
+
+  String? getToken() {
+    return token;
+  }
 
   Future<void> cadastrarFuncionario(CadastroFuncionario funcionario) async {
     final url = Uri.parse("$_baseUrl/cadastro");

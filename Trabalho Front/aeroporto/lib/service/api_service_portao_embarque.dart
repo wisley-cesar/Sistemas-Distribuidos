@@ -1,0 +1,33 @@
+import 'dart:convert';
+
+import 'package:aeroporto/models/portao/portao_embarque_cadastro.dart';
+import 'package:aeroporto/service/api_service_funcionario.dart';
+import 'package:get/instance_manager.dart';
+import 'package:http/http.dart' as http;
+
+class ApiServicePortaoEmbarque {
+  static const String _baseUrl = 'http://localhost:8080/portoes';
+
+  ApiServiceFuncionario apiServiceFuncionario = Get.find();
+  Future<void> cadastrarPortaoEmbarque(PortaoEmbarqueCadastro portao) async {
+    String? token = Get.find<ApiServiceFuncionario>().getToken();
+    print('esse é token $token');
+
+    final url = Uri.parse("$_baseUrl");
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(portao.toJson()),
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print('Portão de embarque cadastrado com sucesso: ${portao.codigo}');
+    } else {
+      print('Erro ao cadastrar portão de embarque: ${response.statusCode}');
+      print('Resposta: ${response.body}');
+    }
+  }
+}
