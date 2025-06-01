@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aeroporto/models/portao/portao_embarque.dart';
 import 'package:aeroporto/models/portao/portao_embarque_cadastro.dart';
 import 'package:aeroporto/service/api_service_funcionario.dart';
 import 'package:get/instance_manager.dart';
@@ -61,5 +62,24 @@ class ApiServicePortaoEmbarque {
       return [];
     }
   }
-  
+
+  Future<void> atualizarPortaoEmbarque(PortaoEmbarque portao) async {
+    String? token = Get.find<ApiServiceFuncionario>().getToken();
+
+    final url = Uri.parse("$_baseUrl/${portao.id}");
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': "Bearer $token",
+      },
+      body: jsonEncode(portao.toJson()),
+    );
+    if (response.statusCode == 200) {
+      print('Portão de embarque atualizado com sucesso: ${portao.codigo}');
+    } else {
+      print('Erro ao atualizar portão de embarque: ${response.statusCode}');
+      print('Resposta: ${response.body}');
+    }
+  }
 }

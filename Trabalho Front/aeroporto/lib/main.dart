@@ -1,5 +1,6 @@
 import 'package:aeroporto/aeroporto_app.dart';
 import 'package:aeroporto/models/funcionario/cadastro_funcionario.dart';
+import 'package:aeroporto/models/portao/portao_embarque.dart';
 import 'package:aeroporto/models/portao/portao_embarque_cadastro.dart';
 import 'package:aeroporto/service/api_service_funcionario.dart';
 import 'package:aeroporto/service/api_service_portao_embarque.dart';
@@ -29,6 +30,15 @@ void main() async {
   await api.fazerLogin(funcionario.senha, funcionario.email);
 
   await api_portao.listarPortoesEmbarque();
+
+  await api_portao.atualizarPortaoEmbarque(
+    PortaoEmbarque(
+      id: '6834509a14b43f04c5b05f56',
+      codigo: 'A&7',
+      disponivel: true,
+      ativo: true,
+    ),
+  );
 
   // await api.cadastrarFuncionario(funcionario);
 
