@@ -2,11 +2,9 @@ package com.wisley.ads_sistema.Model.user;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.wisley.ads_sistema.Model.ads.DadosModelAdsListagem;
 import com.wisley.ads_sistema.Model.category.DadosCategory;
-import com.wisley.ads_sistema.Model.states.ListagemStates;
-
+import com.wisley.ads_sistema.Model.states.StatesModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,22 +13,19 @@ import lombok.Setter;
 @Document(collection = "User")
 public class UserModel {
     @Id
-    private  String id;
+    private String id;
     private String userName;
-
     private String email;
-
     private String password;
-
     private String token;
     private boolean ativo; 
-    private ListagemStates states;
+    private StatesModel states;  // Usando StatesModel no lugar de DadosCadastroStates
     private DadosCategory category;
     private DadosModelAdsListagem ads;
 
-    public UserModel() {
-    }
+    public UserModel() {}
 
+    // Construtor que agora converte DadosCadastroStates para StatesModel
     public UserModel(DadosUser dadosUser) {
         this.ativo = true;
         this.email = dadosUser.email();
@@ -39,7 +34,7 @@ public class UserModel {
         this.token = dadosUser.token();
         this.userName = dadosUser.userName();
         this.category = dadosUser.category();
-        this.states = dadosUser.states();
+        this.states = new StatesModel(dadosUser.states()); // Conversão para StatesModel
         this.ads = dadosUser.ads();
     }
     
@@ -47,11 +42,10 @@ public class UserModel {
         this.id = dadosUserAtualizacao.id();
         this.userName = dadosUserAtualizacao.userName();
         this.email = dadosUserAtualizacao.email();
-        this.states = dadosUserAtualizacao.states();
+        this.states = new StatesModel(dadosUserAtualizacao.states()); // Conversão para StatesModel
         this.category = dadosUserAtualizacao.category();
         this.ads = dadosUserAtualizacao.ads();
     }
-
 
     public void atualizarInformacoesUser(DadosUserAtualizacao dadosUser) {
         if (dadosUser.userName() != null) {
@@ -60,13 +54,11 @@ public class UserModel {
         if (dadosUser.email() != null) {
             this.email = dadosUser.email();
         }
-        if(dadosUser.states() != null) {
-            this.states = dadosUser.states();
+        if (dadosUser.states() != null) {
+            this.states = new StatesModel(dadosUser.states()); // Conversão para StatesModel
         }
-       
         if (dadosUser.category() != null) {
             this.category = dadosUser.category();
-            
         }
         if (dadosUser.ads() != null) {
             this.ads = dadosUser.ads();
@@ -75,14 +67,13 @@ public class UserModel {
 
     public void excluir() {
         this.ativo = false;
-      
     }
+
     public boolean isAtivo() {
         return ativo;
     }
+
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-    
-
 }

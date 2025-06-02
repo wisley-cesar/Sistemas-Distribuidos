@@ -11,6 +11,7 @@ import com.example.demo.models.passageiro.Passageiro;
 import com.example.demo.models.passageiro.PassageiroListagem;
 import com.example.demo.models.passageiro.StatusCheckIn;
 import com.example.demo.repository.PassageiroRepository;
+import com.example.demo.security.RequireAdmin;
 import com.example.demo.service.passageiro.PassageiroService;
 
 import jakarta.validation.Valid;
@@ -29,6 +30,7 @@ public class PassageiroController {
     }
 
     @PostMapping
+    @RequireAdmin
     public ResponseEntity<?> cadastrarPassageiro(@Valid @RequestBody DadosCadastroPassageiro dadosCadastro) {
         try {
             passageiroService.cadastrarPassageiro(dadosCadastro);
@@ -44,11 +46,13 @@ public class PassageiroController {
     }
 
     @PatchMapping("/{id}/status-check-in")
+    @RequireAdmin
     public Passageiro atualizarStatusCheckIn(@PathVariable String id, @RequestParam StatusCheckIn statusCheckIn) {
         return passageiroService.atualizarStatusCheckIn(id, statusCheckIn);
     }
 
     @PutMapping("/{id}/status-check-in")
+    @RequireAdmin
     public ResponseEntity<?> atualizarStatusCheckInPut(@PathVariable String id, @RequestBody Map<String, String> body) {
         String statusStr = body.get("statusCheckIn");
         if (statusStr == null) {
@@ -66,14 +70,17 @@ public class PassageiroController {
     }
 
     @DeleteMapping("/{id}")
+    @RequireAdmin
     public void deletarPassageiro(@PathVariable String id) {
         Passageiro passageiro = passageiroRepository.findById(id).orElseThrow(() -> new RuntimeException("Passageiro não encontrado"));
         passageiro.setAtivo(false);
         passageiroRepository.save(passageiro);
     }
 
-    public void atulizarPassageiro(DadosAtualizacaoPassageiro atualizacaoPassageiro) {
-        Passageiro passageiro = passageiroRepository.findById(atualizacaoPassageiro.id()).orElseThrow(() -> new RuntimeException("Passageiro não encontrado"));
+    @PutMapping("/{id}")
+    @RequireAdmin
+    public void atulizarPassageiro(@PathVariable String id, @RequestBody DadosAtualizacaoPassageiro atualizacaoPassageiro) {
+        Passageiro passageiro = passageiroRepository.findById(id).orElseThrow(() -> new RuntimeException("Passageiro não encontrado"));
         passageiro.atualizarInformacoes(atualizacaoPassageiro);
         passageiroRepository.save(passageiro);
     }

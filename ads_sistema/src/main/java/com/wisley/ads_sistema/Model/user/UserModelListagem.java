@@ -1,6 +1,5 @@
 package com.wisley.ads_sistema.Model.user;
-
-import com.wisley.ads_sistema.Model.states.ListagemStates;
+import com.wisley.ads_sistema.Model.states.StatesModel;
 import com.wisley.ads_sistema.Model.ads.DadosModelAdsListagem;
 import com.wisley.ads_sistema.Model.category.DadosCategory;
 public record UserModelListagem(
@@ -10,7 +9,7 @@ public record UserModelListagem(
     String password,
     String token,
     boolean ativo,
-    ListagemStates states,
+    StatesModel states,
     DadosCategory category, 
     DadosModelAdsListagem ads
 ) {
