@@ -10,6 +10,11 @@ class PortaoEmbarque {
     required this.disponivel,
     required this.ativo,
   });
+  PortaoEmbarque.somenteId(String id)
+    : id = id,
+      codigo = '',
+      disponivel = false,
+      ativo = false;
 
   PortaoEmbarque.fromJson(Map<String, dynamic> json)
     : id = json['id'],
