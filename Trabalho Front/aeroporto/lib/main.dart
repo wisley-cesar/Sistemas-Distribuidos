@@ -1,8 +1,12 @@
 import 'package:aeroporto/aeroporto_app.dart';
 import 'package:aeroporto/models/funcionario/cadastro_funcionario.dart';
-import 'package:aeroporto/models/portao/portao_embarque_cadastro.dart';
+import 'package:aeroporto/models/portao/portao_embarque.dart';
+import 'package:aeroporto/models/voo/status_voo.dart';
+import 'package:aeroporto/models/voo/voo_cadastro.dart';
+import 'package:aeroporto/models/voo/voo_embarque.dart';
 import 'package:aeroporto/service/api_service_funcionario.dart';
 import 'package:aeroporto/service/api_service_portao_embarque.dart';
+import 'package:aeroporto/service/api_service_voo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
@@ -28,9 +32,60 @@ void main() async {
 
   await api.fazerLogin(funcionario.senha, funcionario.email);
 
-  await api_portao.cadastrarPortaoEmbarque(
-    PortaoEmbarqueCadastro(codigo: 'T9', disponivel: true),
-  );
+  final ApiServiceVoo apiVoo = ApiServiceVoo();
+  // await apiVoo.cadastrarVoo(
+  //   VooCadastro(
+  //     numeroVoo: 778,
+  //     origem: "Rio de Janeiro",
+  //     destino: "São Paulo",
+  //     dataHoraPartida: "2023-10-01T10:00:00Z",
+  //     portaoEmbarqueId: PortaoEmbarque.somenteId(
+  //       '6834697014b43f04c5b05f5b',
+  //     ),
+  //     statusVoo: StatusVoo.PROGRAMADO,
+  //   ),
+  // );
+  await apiVoo.listarVoos();
+  await apiVoo.excluirVoo('683dea9a42eb311012add846');
+  // await apiVoo.atualizarVoo(
+  //   VooEmbarque(
+  //     id: '683ca5d8b9c6cf3383f1044e',
+  //     numeroVoo: 777,
+  //     origem: "Morrinhos",
+  //     destino: "Mato Grosso",
+  //     dataHoraPartida: "2023-10-01T10:00:00Z",
+  //     portaoEmbarqueId: PortaoEmbarque.somenteId(
+  //       '6834697014b43f04c5b05f5b',
+  //     ),
+  //     statusVoo: StatusVoo.PROGRAMADO,
+  //     ativo: true,
+  //   ),
+  // );
+
+  // apiVoo.cadastrarVoo(
+  //   VooCadastro(
+  //     numeroVoo: 778,
+  //     origem: "Rio de Janeiro",
+  //     destino: "São Paulo",
+  //     dataHoraPartida: "2023-10-01T10:00:00Z",
+  //     portaoEmbarqueId: PortaoEmbarque.somenteId(
+  //       '6834697014b43f04c5b05f5b',
+  //     ),
+  //     statusVoo: StatusVoo.PROGRAMADO,
+  //   ),
+  // );
+
+  // await api_portao.listarPortoesEmbarque();
+
+  // await api_portao.atualizarPortaoEmbarque(
+  //   PortaoEmbarque(
+  //     id: '6834509a14b43f04c5b05f56',
+  //     codigo: 'A&7',
+  //     disponivel: true,
+  //     ativo: true,
+  //   ),
+  // );
+  // await api_portao.excluirPortaoEmbarque('683b48d2b4dfba64c008949e');
 
   // await api.cadastrarFuncionario(funcionario);
 
