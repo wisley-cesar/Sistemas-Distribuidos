@@ -32,59 +32,25 @@ class ApiServiceVoo {
     final url = Uri.parse("$baseUrl");
     final String? token = Get.find<ApiServiceFuncionario>().getToken();
 
-    final response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        if (token != null) 'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      print('Voos listados com sucesso');
-      final decoded = jsonDecode(response.body);
-      print('Voos: $decoded');
-    } else {
-      print('Erro ao listar voos: ${response.statusCode}');
-      print('Resposta: ${response.body}');
-    }
-  }
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+      );
 
-  Future<void> atualizarVoo(VooEmbarque voo) async {
-    final url = Uri.parse("$baseUrl/${voo.id}");
-    final String? token = Get.find<ApiServiceFuncionario>().getToken();
-
-    final response = await http.put(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        if (token != null) 'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(voo.toJson()),
-    );
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      print('Voo atualizado com sucesso: ${voo.numeroVoo}');
-    } else {
-      print('Erro ao atualizar voo: ${response.statusCode}');
-      print('Resposta: ${response.body}');
-    }
-  }
-
-  Future<void> excluirVoo(String id) async {
-    final url = Uri.parse("$baseUrl/$id");
-    final String? token = Get.find<ApiServiceFuncionario>().getToken();
-
-    final response = await http.delete(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        if (token != null) 'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      print('Voo excluído com sucesso: $id');
-    } else {
-      print('Erro ao excluir voo: ${response.statusCode}');
-      print('Resposta: ${response.body}');
+      if (response.statusCode == 200) {
+        print('Voos listados com sucesso');
+        final decoded = jsonDecode(response.body);
+        print('Resposta da API: $decoded'); // Para debug
+      } else {
+        print('Erro ao listar voos: ${response.statusCode}');
+        print('Resposta: ${response.body}');
+      }
+    } catch (e) {
+      print('Erro ao processar resposta: $e');
     }
   }
 }
