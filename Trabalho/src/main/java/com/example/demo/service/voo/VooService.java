@@ -1,5 +1,4 @@
 package com.example.demo.service.voo;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,17 +91,23 @@ public class VooService {
             // Marcar o portão como indisponível quando um voo é atribuído a ele
             portao.setDisponivel(false);
             portaoRepository.save(portao);
+            
+            // Atualizar a referência do portão no voo com os dados atualizados
+            voo.setIdPortao(portao);
         }
         return vooRepository.save(voo);
     }
 
     public List<RelatorioVooDTO> gerarRelatorioVoosHoje() {
-        LocalDate hoje = LocalDate.now();
-        List<Voo> voos = vooRepository.findAll();
+        List<Voo> voos = vooRepository.findAll().stream()
+            .filter(voo -> voo.isAtivo())
+            .collect(Collectors.toList());
+            
         return voos.stream()
-            .filter(voo -> voo.getDataHoraPartida() != null && voo.getDataHoraPartida().startsWith(hoje.toString()))
             .map(voo -> {
-                String portao = (voo.getIdPortao() != null) ? voo.getIdPortao().getCodigo() : null;
+                String portao = (voo.getIdPortao() != null) ? 
+                    (voo.getIdPortao().getCodigo() != null ? voo.getIdPortao().getCodigo() : "Sem código") : 
+                    null;
                 List<RelatorioPassageiroDTO> passageiros = passageiroRepository.findAll().stream()
                     .filter(p -> p.getIdVoo() != null && p.getIdVoo().getId().equals(voo.getId()))
                     .map(p -> new RelatorioPassageiroDTO(p.getNome(), p.getCpf(), p.getStatusCheckIn()))
@@ -118,6 +123,43 @@ public class VooService {
                 );
             })
             .collect(Collectors.toList());
+    }
+
+    public void deletarVoo(String id) {
+        Voo voo = vooRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Voo não encontrado"));
+
+        // Verificar se o voo já está inativo
+        if (!voo.isAtivo()) {
+            throw new RuntimeException("Este voo já foi excluído anteriormente");
+        }
+
+        // Verificar se existem passageiros com check-in realizado
+        List<Passageiro> passageirosComCheckIn = passageiroRepository.findAll().stream()
+            .filter(p -> p.getIdVoo() != null && 
+                       p.getIdVoo().getId().equals(voo.getId()) && 
+                       p.getStatusCheckIn() == StatusCheckIn.REALIZADO)
+            .collect(Collectors.toList());
+
+        if (!passageirosComCheckIn.isEmpty()) {
+            throw new RuntimeException("Não é possível excluir o voo pois existem passageiros com check-in realizado");
+        }
+
+        // Verificar se o voo está em status EMBARQUE ou CONCLUIDO
+        if (voo.getStatus() == StatusVoo.EMBARQUE || voo.getStatus() == StatusVoo.CONCLUIDO) {
+            throw new RuntimeException("Não é possível excluir um voo que está em EMBARQUE ou CONCLUIDO");
+        }
+
+        // Se o voo tiver um portão vinculado, liberar o portão
+        if (voo.getIdPortao() != null) {
+            Portao portao = portaoRepository.findById(voo.getIdPortao().getId())
+                .orElseThrow(() -> new RuntimeException("Portão não encontrado"));
+            portao.setDisponivel(true);
+            portaoRepository.save(portao);
+        }
+
+        // Excluir o voo do banco de dados
+        vooRepository.delete(voo);
     }
 }
 
