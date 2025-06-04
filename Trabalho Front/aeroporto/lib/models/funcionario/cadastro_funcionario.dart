@@ -2,31 +2,35 @@ class CadastroFuncionario {
   final String id;
   final String nome;
   final String email;
-  final String cargo;
   final String senha;
+  final String cargo;
 
   CadastroFuncionario({
     required this.id,
     required this.nome,
     required this.email,
-    required this.cargo,
     required this.senha,
+    required this.cargo,
   });
-
-  CadastroFuncionario.fromJson(Map<String, dynamic> json)
-    : nome = json['nome'],
-      id = json['id'],
-      email = json['email'],
-      cargo = json['cargo'],
-      senha = json['senha'];
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'nome': nome,
       'email': email,
-      'cargo': cargo,
       'senha': senha,
+      'cargo': cargo,
     };
+  }
+
+  factory CadastroFuncionario.fromJson(Map<String, dynamic> json) {
+    return CadastroFuncionario(
+      id: json['id'] as String,
+      nome: json['nome'] as String,
+      email: json['email'] as String,
+      senha: json['senha'] as String,
+      cargo: json['cargo'] as String,
+    );
   }
 
   @override
