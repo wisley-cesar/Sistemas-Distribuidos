@@ -44,4 +44,19 @@ class VooEmbarque {
       'ativo': ativo,
     };
   }
+
+  static VooEmbarque somenteId(String id) {
+    return VooEmbarque(
+      id: id,
+      numeroVoo: 0,
+      origem: '',
+      destino: '',
+      dataHoraPartida: '',
+      portaoEmbarqueId: PortaoEmbarque.somenteId(''),
+      statusVoo: StatusVoo.PROGRAMADO,
+      ativo: true,
+    );
+  }
+
+  
 }
