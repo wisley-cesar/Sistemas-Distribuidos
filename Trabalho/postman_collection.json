@@ -1,0 +1,592 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+		"name": "Aeroporto API",
+		"description": "API para gerenciamento de aeroporto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "Cadastrar Funcionário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Admin Teste\",\n    \"email\": \"admin@teste.com\",\n    \"senha\": \"123456\",\n    \"cargo\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/funcionarios/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionarios",
+								"cadastro"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@teste.com\",\n    \"senha\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/funcionarios/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionarios",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Funcionários",
+			"item": [
+				{
+					"name": "Listar Funcionários",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/funcionarios/listar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionarios",
+								"listar"
+							]
+						}
+					}
+				},
+				{
+					"name": "Buscar Funcionário por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/funcionarios/{{funcionario_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionarios",
+								"{{funcionario_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Atualizar Funcionário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Admin Teste Atualizado\",\n    \"email\": \"admin@teste.com\",\n    \"senha\": \"123456\",\n    \"cargo\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/funcionarios/{{funcionario_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionarios",
+								"{{funcionario_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Deletar Funcionário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/funcionarios/{{funcionario_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionarios",
+								"{{funcionario_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Voos",
+			"item": [
+				{
+					"name": "Cadastrar Voo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"VOO123\",\n    \"origem\": \"São Paulo\",\n    \"destino\": \"Rio de Janeiro\",\n    \"dataHoraPartida\": \"2024-03-20T10:00:00\",\n    \"dataHoraChegada\": \"2024-03-20T11:30:00\",\n    \"status\": \"AGENDADO\",\n    \"portaoId\": \"{{portao_id}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/voo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"voo"
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Voos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/voo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"voo"
+							]
+						}
+					}
+				},
+				{
+					"name": "Buscar Voo por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/voo/{{voo_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"voo",
+								"{{voo_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Atualizar Voo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{voo_id}}\",\n    \"numero\": \"VOO123\",\n    \"origem\": \"São Paulo\",\n    \"destino\": \"Rio de Janeiro\",\n    \"dataHoraPartida\": \"2024-03-20T10:00:00\",\n    \"dataHoraChegada\": \"2024-03-20T11:30:00\",\n    \"status\": \"EMBARQUE\",\n    \"portaoId\": \"{{portao_id}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/voo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"voo"
+							]
+						}
+					}
+				},
+				{
+					"name": "Deletar Voo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/voo/{{voo_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"voo",
+								"{{voo_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Portões",
+			"item": [
+				{
+					"name": "Cadastrar Portão",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"A1\",\n    \"status\": \"DISPONIVEL\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/portoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"portoes"
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Portões",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/portoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"portoes"
+							]
+						}
+					}
+				},
+				{
+					"name": "Atualizar Portão",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{portao_id}}\",\n    \"numero\": \"A1\",\n    \"status\": \"OCUPADO\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/portoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"portoes"
+							]
+						}
+					}
+				},
+				{
+					"name": "Deletar Portão",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/portoes/{{portao_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"portoes",
+								"{{portao_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Passageiros",
+			"item": [
+				{
+					"name": "Cadastrar Passageiro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"João Silva\",\n    \"cpf\": \"123.456.789-00\",\n    \"email\": \"joao@email.com\",\n    \"telefone\": \"(11) 99999-9999\",\n    \"vooId\": \"{{voo_id}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/passageiros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"passageiros"
+							]
+						}
+					}
+				},
+				{
+					"name": "Listar Passageiros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/passageiros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"passageiros"
+							]
+						}
+					}
+				},
+				{
+					"name": "Buscar Passageiro por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/passageiros/{{passageiro_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"passageiros",
+								"{{passageiro_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Atualizar Passageiro",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{passageiro_id}}\",\n    \"nome\": \"João Silva Atualizado\",\n    \"cpf\": \"123.456.789-00\",\n    \"email\": \"joao.novo@email.com\",\n    \"telefone\": \"(11) 98888-8888\",\n    \"vooId\": \"{{voo_id}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/passageiros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"passageiros"
+							]
+						}
+					}
+				},
+				{
+					"name": "Deletar Passageiro",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/passageiros/{{passageiro_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"passageiros",
+								"{{passageiro_id}}"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "seu_token_aqui"
+		},
+		{
+			"key": "funcionario_id",
+			"value": "id_do_funcionario"
+		},
+		{
+			"key": "voo_id",
+			"value": "id_do_voo"
+		},
+		{
+			"key": "portao_id",
+			"value": "id_do_portao"
+		},
+		{
+			"key": "passageiro_id",
+			"value": "id_do_passageiro"
+		}
+	]
+} 
