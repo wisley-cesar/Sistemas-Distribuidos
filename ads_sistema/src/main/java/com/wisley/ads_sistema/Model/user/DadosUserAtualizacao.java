@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 
 import com.wisley.ads_sistema.Model.ads.DadosModelAdsListagem;
 import com.wisley.ads_sistema.Model.category.DadosCategory;
-import com.wisley.ads_sistema.Model.states.ListagemStates;
+import com.wisley.ads_sistema.Model.states.DadosCadastroStates;
 
 public record DadosUserAtualizacao(
         @Id        
@@ -12,7 +12,7 @@ public record DadosUserAtualizacao(
         String userName,
         DadosModelAdsListagem ads,
         String email,
-        ListagemStates states,
+        DadosCadastroStates states,
         DadosCategory category
 
 ) {

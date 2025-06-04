@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 
 import com.wisley.ads_sistema.Model.ads.DadosModelAdsListagem;
 import com.wisley.ads_sistema.Model.category.DadosCategory;
+import com.wisley.ads_sistema.Model.states.DadosCadastroStates;
 import com.wisley.ads_sistema.Model.states.ListagemStates;
 
 import jakarta.validation.constraints.Email;
@@ -32,9 +33,10 @@ public record DadosUser(
         String token,
 
         @NotNull(message = "O estado é obrigatório")
-        ListagemStates states,
+        DadosCadastroStates states,
 
         @NotNull(message = "A categoria é obrigatória")
+
         DadosCategory category,
 
         @NotNull(message = "O ativo é obrigatório")

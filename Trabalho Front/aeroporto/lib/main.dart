@@ -16,30 +16,30 @@ void main() async {
     const AeroportoApp(),
   );
 
-  final api = Get.put(ApiServiceFuncionario());
-  final funcionario = CadastroFuncionario(
-    nome: 'Wisley César',
-    email: 'wisleycesar32@gmail.com',
-    cargo: 'admin',
-    senha: '1223123',
-    id: '6839a88de29a8973c2386c56',
-  );
+  // final api = Get.put(ApiServiceFuncionario());
+  // final funcionario = CadastroFuncionario(
+  //   nome: 'Wisley César',
+  //   email: 'wisleycesar32@gmail.com',
+  //   cargo: 'admin',
+  //   senha: '1223123',
+  //   id: '6839a88de29a8973c2386c56',
+  // );
 
-  // final api = ApiServiceFuncionario();
-  // await api.cadastrarFuncionario(funcionario);
-  final api_portao = ApiServicePortaoEmbarque();
+  // // final api = ApiServiceFuncionario();
+  // // await api.cadastrarFuncionario(funcionario);
+  // final api_portao = ApiServicePortaoEmbarque();
 
-  await api.fazerLogin(funcionario.senha, funcionario.email);
+  // await api.fazerLogin(funcionario.senha, funcionario.email);
 
-  final ApiServiceVoo apiVoo = ApiServiceVoo();
+  // final ApiServiceVoo apiVoo = ApiServiceVoo();
 
-  final apiPassageiro = ApiServicePassageiro();
-  await apiPassageiro.cadastrarPassageiro(
-    Passageiro.cadastro(
-      nome: 'Wisley César',
-      cpf: '71249189101',
-      vooEmbarqueId: VooEmbarque.somenteId('683ca5d8b9c6cf3383f1044e'),
-    ),
-  );
-  await apiPassageiro.listarPassageiros();
+  // final apiPassageiro = ApiServicePassageiro();
+  // await apiPassageiro.cadastrarPassageiro(
+  //   Passageiro.cadastro(
+  //     nome: 'Wisley César',
+  //     cpf: '71249189101',
+  //     vooEmbarqueId: VooEmbarque.somenteId('683ca5d8b9c6cf3383f1044e'),
+  //   ),
+  // );
+  // await apiPassageiro.listarPassageiros();
 }
