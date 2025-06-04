@@ -1,6 +1,7 @@
 import 'package:aeroporto/screens/login_funcionario/login_funcionario_screen.dart';
 import 'package:aeroporto/screens/login_passageiro/login_passageiro_screen.dart';
 import 'package:aeroporto/screens/register_funcionario.dart/register_screen.dart';
+import 'package:aeroporto/screens/register_passageiro/register_passageiro_screen.dart';
 import 'package:aeroporto/screens/welcome/welcome_screen.dart';
 import 'package:aeroporto/service/api_service_funcionario.dart';
 import 'package:aeroporto/util/app_routes.dart';
@@ -33,6 +34,9 @@ class AeroportoApp extends StatelessWidget {
         GetPage(
             name: AppRoutes.login_passageiro,
             page: () => LoginPassageiroScreen()),
+        GetPage(
+            name: AppRoutes.register_passageiro,
+            page: () => RegisterPassageiroScreen()),
       ],
     );
   }

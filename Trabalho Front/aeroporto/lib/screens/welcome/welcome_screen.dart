@@ -25,13 +25,11 @@ class WelcomeScreen extends StatelessWidget {
                 Get.toNamed(AppRoutes.login_passageiro);
               }
             } else {
-              // Por enquanto, vamos apenas mostrar um SnackBar para cadastro
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Cadastro de $userType em desenvolvimento'),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
+              if (userType == 'Funcionário') {
+                Get.toNamed(AppRoutes.register);
+              } else {
+                Get.toNamed(AppRoutes.register_passageiro);
+              }
             }
           },
         );
