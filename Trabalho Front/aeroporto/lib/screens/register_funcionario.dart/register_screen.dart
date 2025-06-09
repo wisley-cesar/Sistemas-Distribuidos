@@ -17,6 +17,7 @@ class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _registerController = Get.put(RegisterController());
@@ -77,6 +78,26 @@ class RegisterScreen extends StatelessWidget {
                     controller: _nameController,
                   ),
                   const SizedBox(height: 16),
+                  if (isPassageiro) ...[
+                    MyTextInput(
+                      label: 'CPF',
+                      prefixIcon: Icons.badge,
+                      keyboardType: TextInputType.number,
+                      hintText: 'Digite seu CPF',
+                      textInputAction: TextInputAction.next,
+                      controller: _cpfController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira o CPF';
+                        }
+                        if (value.length != 11) {
+                          return 'CPF deve conter 11 dígitos';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   MyTextInput(
                     label: 'Email',
                     prefixIcon: Icons.email,
@@ -87,8 +108,10 @@ class RegisterScreen extends StatelessWidget {
                     isEmail: true,
                   ),
                   const SizedBox(height: 16),
-                  const UserTypeDropdown(),
-                  const SizedBox(height: 16),
+                  if (!isPassageiro) ...[
+                    const UserTypeDropdown(),
+                    const SizedBox(height: 16),
+                  ],
                   MyTextInput(
                     label: 'Senha',
                     prefixIcon: Icons.lock,

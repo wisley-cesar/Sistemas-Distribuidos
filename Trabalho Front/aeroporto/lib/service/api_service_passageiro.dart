@@ -8,8 +8,24 @@ class ApiServicePassageiro {
   static const String _baseUrl = 'http://localhost:8080/passageiros';
 
   /// Cadastra um passageiro na API.
-  Future<void> cadastrarPassageiro(Passageiro passageiro) async {
+  Future<void> cadastrarPassageiro({
+    required String nome,
+    required String cpf,
+    required String email,
+    required String senha,
+    required String idVoo,
+  }) async {
     final String? token = Get.find<ApiServiceFuncionario>().getToken();
+
+    final Map<String, dynamic> body = {
+      'nome': nome,
+      'cpf': cpf,
+      'email': email,
+      'senha': senha,
+      'idVoo': {
+        'id': idVoo,
+      },
+    };
 
     final response = await http.post(
       Uri.parse('$_baseUrl'),
@@ -17,17 +33,18 @@ class ApiServicePassageiro {
         'Content-Type': 'application/json',
         if (token != null) 'Authorization': "Bearer $token",
       },
-      body: jsonEncode(passageiro.toJson()),
+      body: jsonEncode(body),
     );
+
     if (response.statusCode == 201 || response.statusCode == 200) {
-      print('Passageiro cadastrado com sucesso: ${passageiro.nome}');
+      print('Passageiro cadastrado com sucesso: $nome');
     } else {
-      print('Erro ao cadastrar passageiro: ${response.statusCode}');
-      print('Resposta: ${response.body}');
+      final error = jsonDecode(response.body);
+      throw Exception(error['message'] ?? 'Erro ao cadastrar passageiro');
     }
   }
 
-  /// (Opcional) Busca todos os passageiros cadastrados
+  /// Busca todos os passageiros cadastrados
   Future<List<Passageiro>> listarPassageiros() async {
     final String? token = Get.find<ApiServiceFuncionario>().getToken();
     final response = await http.get(

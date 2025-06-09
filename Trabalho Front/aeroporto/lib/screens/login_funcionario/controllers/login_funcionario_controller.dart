@@ -3,10 +3,15 @@ import 'package:aeroporto/util/app_routes.dart';
 import 'package:get/get.dart';
 
 class LoginFuncionarioController extends GetxController {
-  final ApiServiceFuncionario _apiService = Get.find<ApiServiceFuncionario>();
-
+  late final ApiServiceFuncionario _apiService;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _apiService = Get.put(ApiServiceFuncionario());
+  }
 
   Future<bool> login(String email, String password) async {
     try {

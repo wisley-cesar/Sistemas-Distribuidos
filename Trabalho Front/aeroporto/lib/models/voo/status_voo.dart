@@ -3,6 +3,8 @@ enum StatusVoo {
   EMBARQUE,
   CONCLUIDO;
 
+  String get name => toString().split('.').last;
+
   static fromJson(json) {
     switch (json) {
       case 'PROGRAMADO':
