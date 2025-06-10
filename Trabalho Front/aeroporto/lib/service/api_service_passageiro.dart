@@ -128,4 +128,29 @@ class ApiServicePassageiro {
       return [];
     }
   }
+
+  /// Busca os dados do passageiro logado
+  Future<PassageiroLoginResponse> getPassageiroData() async {
+    final String? token = Get.find<ApiServiceFuncionario>().getToken();
+
+    if (token == null) {
+      throw Exception('Token não encontrado. Faça login novamente.');
+    }
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/me'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return PassageiroLoginResponse.fromJson(data);
+    } else {
+      final error = jsonDecode(response.body);
+      throw Exception(error['message'] ?? 'Erro ao buscar dados do passageiro');
+    }
+  }
 }
