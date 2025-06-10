@@ -20,15 +20,15 @@ class WelcomeScreen extends StatelessWidget {
           onSelect: (String userType) {
             if (isLogin) {
               if (userType == 'Funcionário') {
-                Get.toNamed(AppRoutes.login);
+                Get.toNamed(AppRoutes.loginFuncionario);
               } else {
-                Get.toNamed(AppRoutes.login_passageiro);
+                Get.toNamed(AppRoutes.loginPassageiro);
               }
             } else {
               if (userType == 'Funcionário') {
-                Get.toNamed(AppRoutes.register);
+                Get.toNamed(AppRoutes.registerFuncionario);
               } else {
-                Get.toNamed(AppRoutes.register_passageiro);
+                Get.toNamed(AppRoutes.selectFlight);
               }
             }
           },

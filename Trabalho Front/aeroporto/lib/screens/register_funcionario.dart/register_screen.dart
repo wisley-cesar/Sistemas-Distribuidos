@@ -17,6 +17,7 @@ class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _registerController = Get.put(RegisterController());
@@ -75,8 +76,37 @@ class RegisterScreen extends StatelessWidget {
                     hintText: 'Digite seu nome completo',
                     textInputAction: TextInputAction.next,
                     controller: _nameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'O nome é obrigatório';
+                      }
+                      if (value.length < 3) {
+                        return 'O nome deve ter pelo menos 3 caracteres';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 16),
+                  if (isPassageiro) ...[
+                    MyTextInput(
+                      label: 'CPF',
+                      prefixIcon: Icons.badge,
+                      keyboardType: TextInputType.number,
+                      hintText: 'Digite seu CPF',
+                      textInputAction: TextInputAction.next,
+                      controller: _cpfController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira o CPF';
+                        }
+                        if (value.length != 11) {
+                          return 'CPF deve conter 11 dígitos';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   MyTextInput(
                     label: 'Email',
                     prefixIcon: Icons.email,
@@ -85,10 +115,23 @@ class RegisterScreen extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     controller: _emailController,
                     isEmail: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'O email é obrigatório';
+                      }
+                      final emailRegex =
+                          RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                      if (!emailRegex.hasMatch(value)) {
+                        return 'Email inválido';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 16),
-                  const UserTypeDropdown(),
-                  const SizedBox(height: 16),
+                  if (!isPassageiro) ...[
+                    const UserTypeDropdown(),
+                    const SizedBox(height: 16),
+                  ],
                   MyTextInput(
                     label: 'Senha',
                     prefixIcon: Icons.lock,
@@ -97,6 +140,17 @@ class RegisterScreen extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     controller: _passwordController,
                     isPassword: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'A senha é obrigatória';
+                      }
+                      final passwordRegex = RegExp(
+                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$');
+                      if (!passwordRegex.hasMatch(value)) {
+                        return 'A senha deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula e um número';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 16),
                   MyTextInput(
@@ -107,6 +161,9 @@ class RegisterScreen extends StatelessWidget {
                     textInputAction: TextInputAction.done,
                     controller: _confirmPasswordController,
                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Confirme sua senha';
+                      }
                       if (value != _passwordController.text) {
                         return 'As senhas não coincidem';
                       }
@@ -115,7 +172,9 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   Obx(() => ButtonLogin(
-                        title: 'Cadastrar',
+                        title: _registerController.isLoading.value
+                            ? 'Cadastrando...'
+                            : 'Cadastrar',
                         backgroundColor: Colors.blue.shade700,
                         foregroundColor: Colors.white,
                         shadowColor: Colors.blue.shade900,
@@ -128,6 +187,7 @@ class RegisterScreen extends StatelessWidget {
                                     _nameController.text,
                                     _emailController.text,
                                     _passwordController.text,
+                                    _confirmPasswordController.text,
                                   );
                                   if (success) {
                                     Get.offAllNamed(AppRoutes.login);

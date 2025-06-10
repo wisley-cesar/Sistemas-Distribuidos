@@ -1,8 +1,12 @@
 class AppRoutes {
-  static const String home = '/home';
-  static const String welcome_screen = '/welcome_screen';
+  static const String home = '/';
+  static const String welcome = '/welcome';
   static const String login = '/login';
   static const String register = '/register';
-  static const String login_passageiro = '/login_passageiro';
-  static const String register_passageiro = '/register_passageiro';
+  static const String registerPassageiro = '/register_passageiro';
+  static const String registerFuncionario = '/register_funcionario';
+  static const String loginPassageiro = '/login_passageiro';
+  static const String loginFuncionario = '/login_funcionario';
+  static const String selectFlight = '/select_flight';
+  static const String registerPassageiroScreen = '/register_passageiro_screen';
 }

@@ -28,7 +28,7 @@ class ApiServiceVoo {
     }
   }
 
-  Future<void> listarVoos() async {
+  Future<List<VooEmbarque>> listarVoos() async {
     final url = Uri.parse("$baseUrl");
     final String? token = Get.find<ApiServiceFuncionario>().getToken();
 
@@ -42,15 +42,43 @@ class ApiServiceVoo {
       );
 
       if (response.statusCode == 200) {
-        print('Voos listados com sucesso');
         final decoded = jsonDecode(response.body);
-        print('Resposta da API: $decoded'); // Para debug
+        print('Resposta da API: $decoded');
+
+        if (decoded is Map && decoded.containsKey('content')) {
+          final List<dynamic> data = decoded['content'] as List<dynamic>;
+          return data.map((json) {
+            // Ajusta o formato do JSON para corresponder ao modelo
+            final Map<String, dynamic> adjustedJson = {
+              'id': json['id'],
+              'numeroVoo': json['numeroVoo'],
+              'origem': json['origem'],
+              'destino': json['destino'],
+              'dataHoraPartida': json['dataHoraPartida'],
+              'portaoEmbarqueId': {
+                'id': json['idPortao']['id'],
+                'codigo': json['idPortao']['codigo'] ?? '',
+                'disponivel': json['idPortao']['disponivel'] ?? true,
+                'ativo': json['idPortao']['ativo'] ?? true,
+              },
+              'statusVoo': json['status'],
+              'ativo': true,
+            };
+            print('JSON ajustado: $adjustedJson'); // Debug
+            return VooEmbarque.fromJson(adjustedJson);
+          }).toList();
+        } else {
+          print('Formato de resposta inválido: $decoded');
+          return [];
+        }
       } else {
         print('Erro ao listar voos: ${response.statusCode}');
         print('Resposta: ${response.body}');
+        return [];
       }
     } catch (e) {
       print('Erro ao processar resposta: $e');
+      return [];
     }
   }
 }
