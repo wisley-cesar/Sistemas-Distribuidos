@@ -23,14 +23,17 @@ class VooEmbarque {
   });
 
   VooEmbarque.fromJson(Map<String, dynamic> json)
-    : id = json['id'],
-      numeroVoo = json['numeroVoo'],
-      origem = json['origem'],
-      destino = json['destino'],
-      dataHoraPartida = json['dataHoraPartida'],
-      portaoEmbarqueId = PortaoEmbarque.fromJson(json['portaoEmbarqueId']),
-      statusVoo = StatusVoo.fromJson(json['statusVoo']),
-      ativo = json['ativo'];
+      : id = json['id'],
+        numeroVoo = json['numeroVoo'],
+        origem = json['origem'],
+        destino = json['destino'],
+        dataHoraPartida = json['dataHoraPartida'],
+        portaoEmbarqueId = PortaoEmbarque.fromJson(json['portaoEmbarqueId']),
+        statusVoo = StatusVoo.values.firstWhere(
+          (status) => status.name == (json['statusVoo'] ?? 'PROGRAMADO'),
+          orElse: () => StatusVoo.PROGRAMADO,
+        ),
+        ativo = json['ativo'] ?? true;
 
   Map<String, dynamic> toJson() {
     return {
@@ -57,6 +60,4 @@ class VooEmbarque {
       ativo: true,
     );
   }
-
-  
 }

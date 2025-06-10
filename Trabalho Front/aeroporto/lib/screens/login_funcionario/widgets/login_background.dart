@@ -11,21 +11,25 @@ class LoginBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
+      height: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [
-            Colors.blue.shade900,
-            Colors.blue.shade500,
+            Colors.blue.shade100,
+            Colors.blue.shade50,
           ],
         ),
       ),
       child: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: child,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: child,
+            ),
           ),
         ),
       ),

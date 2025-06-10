@@ -23,13 +23,44 @@ class ApiServiceFuncionario extends GetxController {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(funcionario.toJson()),
       );
+
       if (response.statusCode == 201 || response.statusCode == 200) {
         print('Funcionário cadastrado com sucesso: ${funcionario.nome}');
+        final data = jsonDecode(response.body);
+        if (data['token'] != null) {
+          token = data['token'];
+        }
       } else {
-        print('Erro ao cadastrar funcionário: ${response.statusCode}');
+        final errorData = jsonDecode(response.body);
+        String errorMessage = 'Erro ao cadastrar funcionário';
+
+        if (response.statusCode == 400) {
+          if (errorData['message']
+                  ?.toString()
+                  .toLowerCase()
+                  .contains('email') ??
+              false) {
+            errorMessage = 'Este email já está cadastrado';
+          } else if (errorData['message']
+                  ?.toString()
+                  .toLowerCase()
+                  .contains('senha') ??
+              false) {
+            errorMessage = 'A senha não atende aos requisitos mínimos';
+          }
+        } else if (response.statusCode == 409) {
+          errorMessage = 'Este funcionário já está cadastrado';
+        }
+
+        throw Exception(errorMessage);
       }
+    } on http.ClientException {
+      throw Exception('Erro de conexão. Verifique sua internet');
     } catch (e) {
-      print('Erro ao cadastrar funcionário: $e');
+      if (e is Exception) {
+        rethrow;
+      }
+      throw Exception('Erro ao cadastrar funcionário: $e');
     }
   }
 
@@ -82,7 +113,6 @@ class ApiServiceFuncionario extends GetxController {
 
     final response = await http.get(
       url,
-
       headers: {
         'Content-Type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',

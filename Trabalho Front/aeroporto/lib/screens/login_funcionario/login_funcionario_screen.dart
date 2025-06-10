@@ -90,7 +90,7 @@ class LoginFuncionarioScreen extends StatelessWidget {
                                   _passwordController.text,
                                 );
                                 if (success) {
-                                  Get.toNamed(AppRoutes.home);
+                                  Get.offAllNamed(AppRoutes.home);
                                 }
                               }
                             },
@@ -104,7 +104,7 @@ class LoginFuncionarioScreen extends StatelessWidget {
                     shadowColor: Colors.blue.shade700,
                     isOutlined: true,
                     onPressed: () {
-                      Get.toNamed(AppRoutes.register);
+                      Get.toNamed(AppRoutes.registerFuncionario);
                     },
                   ),
                 ],
