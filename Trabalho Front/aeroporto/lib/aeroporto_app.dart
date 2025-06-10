@@ -8,7 +8,7 @@ import 'package:aeroporto/service/api_service_funcionario.dart';
 import 'package:aeroporto/util/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'screens/home_screen.dart';
+import 'screens/home_screen/home_screen.dart';
 
 class AeroportoApp extends StatelessWidget {
   const AeroportoApp({super.key});
@@ -27,7 +27,8 @@ class AeroportoApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.welcome,
       getPages: [
-        GetPage(name: AppRoutes.welcome, page: () => WelcomeScreen()),
+        GetPage(name: AppRoutes.home, page: () => const HomeScreen()),
+        GetPage(name: AppRoutes.welcome, page: () => const WelcomeScreen()),
         GetPage(name: AppRoutes.login, page: () => LoginFuncionarioScreen()),
         GetPage(
             name: AppRoutes.loginPassageiro,
