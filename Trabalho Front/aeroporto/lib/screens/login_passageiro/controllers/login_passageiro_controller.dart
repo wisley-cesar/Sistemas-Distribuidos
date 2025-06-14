@@ -33,6 +33,8 @@ class LoginPassageiroController extends GetxController {
         // Armazena os dados do passageiro no controller da home
         final homeController = Get.put(HomeController());
         homeController.passageiro.value = response;
+        homeController.isLoading.value =
+            false; // Garante que o loading seja desativado
 
         Get.offAllNamed(AppRoutes.home);
         return true;

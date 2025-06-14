@@ -23,7 +23,7 @@ class ApiServiceFuncionario extends GetxController {
     token = prefs.getString(_tokenKey);
   }
 
-  Future<void> _saveToken(String newToken) async {
+  Future<void> saveToken(String newToken) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, newToken);
     token = newToken;
@@ -54,7 +54,7 @@ class ApiServiceFuncionario extends GetxController {
         print('Funcionário cadastrado com sucesso: ${funcionario.nome}');
         final data = jsonDecode(response.body);
         if (data['token'] != null) {
-          await _saveToken(data['token']);
+          await saveToken(data['token']);
         }
       } else {
         final errorData = jsonDecode(response.body);
@@ -106,7 +106,7 @@ class ApiServiceFuncionario extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
-      await _saveToken(data['token']);
+      await saveToken(data['token']);
       print('Login realizado com sucesso');
       print('Dados do funcionário: $data');
     } else {

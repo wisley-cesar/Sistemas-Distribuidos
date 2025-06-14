@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:aeroporto/models/passageiros/passageiro.dart';
 import 'package:aeroporto/models/passageiros/passageiro_login_response.dart';
+import 'package:aeroporto/models/passageiros/voo_info.dart' as voo;
 import 'package:aeroporto/service/api_service_funcionario.dart';
 
 class ApiServicePassageiro {
@@ -37,6 +38,11 @@ class ApiServicePassageiro {
           throw Exception(
               'Credenciais inválidas. Por favor, verifique seu email e senha.');
         }
+
+        // Salva o token usando o serviço de funcionário
+        final authService = Get.find<ApiServiceFuncionario>();
+        await authService.saveToken(data['token']);
+
         return PassageiroLoginResponse.fromJson(data);
       } else {
         final error = jsonDecode(response.body);
@@ -77,6 +83,7 @@ class ApiServicePassageiro {
       'idVoo': {
         'id': idVoo,
       },
+      'statusCheckIn': 'PENDENTE'
     };
 
     final response = await http.post(
@@ -151,6 +158,31 @@ class ApiServicePassageiro {
     } else {
       final error = jsonDecode(response.body);
       throw Exception(error['message'] ?? 'Erro ao buscar dados do passageiro');
+    }
+  }
+
+  /// Busca os detalhes de um voo específico
+  Future<voo.VooInfo?> getVooDetails(String idVoo) async {
+    final String? token = Get.find<ApiServiceFuncionario>().getToken();
+
+    if (token == null) {
+      throw Exception('Token não encontrado. Faça login novamente.');
+    }
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/voos/$idVoo'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return voo.VooInfo.fromJson(data);
+    } else {
+      final error = jsonDecode(response.body);
+      throw Exception(error['message'] ?? 'Erro ao buscar detalhes do voo');
     }
   }
 }
