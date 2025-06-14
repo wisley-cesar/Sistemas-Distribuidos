@@ -1,5 +1,6 @@
 package com.example.demo.service.passageiro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.passageiro.DadosCadastroPassageiro;
@@ -16,12 +17,18 @@ public class PassageiroService {
     private final PassageiroRepository passageiroRepository;
     private final VooRepository vooRepository;
     private final PortaoRepository portaoRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PassageiroService(PassageiroRepository passageiroRepository, VooRepository vooRepository, PortaoRepository portaoRepository) {
+    public PassageiroService(
+            PassageiroRepository passageiroRepository, 
+            VooRepository vooRepository, 
+            PortaoRepository portaoRepository,
+            PasswordEncoder passwordEncoder) {
         this.passageiroRepository = passageiroRepository;
         this.vooRepository = vooRepository;
         this.portaoRepository = portaoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Passageiro atualizarStatusCheckIn(String idPassageiro, StatusCheckIn novoStatus) {
@@ -54,11 +61,16 @@ public class PassageiroService {
         if (passageiroRepository.findByCpf(dados.cpf()).isPresent()) {
             throw new RuntimeException("Já existe passageiro com esse CPF.");
         }
+        if (passageiroRepository.findByEmail(dados.email()).isPresent()) {
+            throw new RuntimeException("Já existe passageiro com esse email.");
+        }
         // Validação: voo deve existir
         String idVoo = dados.idVoo().getId();
         Voo voo = vooRepository.findById(idVoo)
             .orElseThrow(() -> new RuntimeException("Voo não encontrado para o passageiro."));
+        
         Passageiro passageiro = new Passageiro(dados);
+        passageiro.setSenha(passwordEncoder.encode(dados.senha())); // Criptografa a senha
         passageiro.setIdVoo(voo); // garanta que está setando o objeto Voo correto
         return passageiroRepository.save(passageiro);
     }
