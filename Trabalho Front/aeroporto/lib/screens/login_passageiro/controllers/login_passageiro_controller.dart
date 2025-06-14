@@ -28,22 +28,14 @@ class LoginPassageiroController extends GetxController {
       );
       print('Login response received: ${response.toJson()}');
 
-      if (response.token.isNotEmpty) {
-        print('Login successful, navigating to home');
-        // Armazena os dados do passageiro no controller da home
-        final homeController = Get.put(HomeController());
-        homeController.passageiro.value = response;
-        homeController.isLoading.value =
-            false; // Garante que o loading seja desativado
+      // Armazena os dados do passageiro no controller da home
+      final homeController = Get.put(HomeController());
+      homeController.passageiro.value = response;
+      homeController.isLoading.value = false;
 
-        Get.offAllNamed(AppRoutes.home);
-        return true;
-      } else {
-        print('Login failed: Empty token received');
-        errorMessage.value =
-            'Credenciais inválidas. Por favor, verifique seu email e senha.';
-        return false;
-      }
+      print('Navegando para a tela home');
+      Get.offAllNamed(AppRoutes.home);
+      return true;
     } catch (e) {
       print('Login error: $e');
       if (e is Exception) {

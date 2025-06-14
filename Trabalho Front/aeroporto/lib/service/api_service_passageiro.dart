@@ -23,7 +23,7 @@ class ApiServicePassageiro {
 
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl/login'),
+        Uri.parse('${_baseUrl}/login'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -34,10 +34,6 @@ class ApiServicePassageiro {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        if (data['token'] == null) {
-          throw Exception(
-              'Credenciais inválidas. Por favor, verifique seu email e senha.');
-        }
 
         // Salva o token usando o serviço de funcionário
         final authService = Get.find<ApiServiceFuncionario>();
@@ -50,9 +46,6 @@ class ApiServicePassageiro {
             error['message'] ?? 'Erro ao fazer login. Tente novamente.';
         throw Exception(errorMessage);
       }
-    } on FormatException {
-      throw Exception(
-          'Erro ao processar resposta do servidor. Tente novamente.');
     } on http.ClientException {
       throw Exception(
           'Não foi possível conectar ao servidor. Verifique sua conexão.');
@@ -144,20 +137,77 @@ class ApiServicePassageiro {
       throw Exception('Token não encontrado. Faça login novamente.');
     }
 
-    final response = await http.get(
-      Uri.parse('$_baseUrl/me'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    try {
+      // Extrai o ID do passageiro do token JWT
+      final parts = token.split('.');
+      if (parts.length != 3) {
+        throw Exception('Token inválido');
+      }
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return PassageiroLoginResponse.fromJson(data);
-    } else {
-      final error = jsonDecode(response.body);
-      throw Exception(error['message'] ?? 'Erro ao buscar dados do passageiro');
+      // Adiciona padding se necessário
+      String base64 = parts[1];
+      switch (base64.length % 4) {
+        case 0:
+          break; // Sem padding necessário
+        case 2:
+          base64 += '==';
+          break;
+        case 3:
+          base64 += '=';
+          break;
+        default:
+          throw Exception('Token mal formatado');
+      }
+
+      // Substitui caracteres não seguros para URL
+      base64 = base64.replaceAll('-', '+').replaceAll('_', '/');
+
+      final payload = jsonDecode(utf8.decode(base64Decode(base64)));
+      final passageiroId = payload['id'];
+
+      print('Buscando dados do passageiro com ID: $passageiroId');
+      print('URL: $_baseUrl/$passageiroId');
+
+      final response = await http.get(
+        Uri.parse('$_baseUrl/$passageiroId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('Resposta da API - Status: ${response.statusCode}');
+      print('Resposta da API - Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        // Converte a resposta para o formato esperado pelo PassageiroLoginResponse
+        final Map<String, dynamic> formattedData = {
+          'token': token,
+          'nome': data['nome'],
+          'cpf': data['cpf'],
+          'idVoo': data['idVoo']['id'],
+          'statusCheckIn': data['statusCheckIn'],
+        };
+
+        return PassageiroLoginResponse.fromJson(formattedData);
+      } else {
+        final error = jsonDecode(response.body);
+        final errorMessage =
+            error['message'] ?? 'Erro ao buscar dados do passageiro';
+        print('Erro na API: $errorMessage');
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      print('Erro ao buscar dados do passageiro: $e');
+      if (e is FormatException) {
+        throw Exception('Erro ao processar o token. Faça login novamente.');
+      }
+      if (e is Exception) {
+        rethrow;
+      }
+      throw Exception('Erro ao buscar dados do passageiro: $e');
     }
   }
 

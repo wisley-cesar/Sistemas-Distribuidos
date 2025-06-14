@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
+    final controller = Get.find<HomeController>();
 
     return Scaffold(
       body: HomeBackground(
@@ -20,18 +20,25 @@ class HomeScreen extends StatelessWidget {
           children: [
             HomeAppBar(controller: controller),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const WelcomeSection(),
-                    const SizedBox(height: 32),
-                    PassengerInfoCard(controller: controller),
-                    const SizedBox(height: 24),
-                    const QuickActionsCard(),
-                  ],
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  // Recarrega os dados do passageiro
+                  await controller.refreshData();
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const WelcomeSection(),
+                      const SizedBox(height: 32),
+                      PassengerInfoCard(controller: controller),
+                      const SizedBox(height: 24),
+                      const QuickActionsCard(),
+                    ],
+                  ),
                 ),
               ),
             ),

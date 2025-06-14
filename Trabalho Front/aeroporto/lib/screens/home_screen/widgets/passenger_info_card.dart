@@ -14,6 +14,11 @@ class PassengerInfoCard extends StatelessWidget {
     required this.controller,
   });
 
+  String _capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -73,7 +78,9 @@ class PassengerInfoCard extends StatelessWidget {
             ] else ...[
               MyInfoRow(
                 label: 'Nome',
-                value: passageiro?.nome ?? 'Não disponível',
+                value: passageiro?.nome != null
+                    ? _capitalizeFirstLetter(passageiro!.nome)
+                    : 'Não disponível',
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: 16),
