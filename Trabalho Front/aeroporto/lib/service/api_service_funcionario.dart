@@ -4,11 +4,37 @@ import 'package:aeroporto/models/funcionario/cadastro_funcionario.dart';
 import 'package:aeroporto/models/funcionario/funcionario.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiServiceFuncionario extends GetxController {
   static const String _baseUrl = "http://localhost:8080/funcionarios";
+  static const String _tokenKey = 'auth_token';
 
   String? token;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    token = prefs.getString(_tokenKey);
+  }
+
+  Future<void> saveToken(String newToken) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_tokenKey, newToken);
+    token = newToken;
+  }
+
+  /// Limpa o token de autenticação
+  Future<void> clearToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_tokenKey);
+    token = null;
+  }
 
   String? getToken() {
     return token;
@@ -28,7 +54,7 @@ class ApiServiceFuncionario extends GetxController {
         print('Funcionário cadastrado com sucesso: ${funcionario.nome}');
         final data = jsonDecode(response.body);
         if (data['token'] != null) {
-          token = data['token'];
+          await saveToken(data['token']);
         }
       } else {
         final errorData = jsonDecode(response.body);
@@ -79,10 +105,9 @@ class ApiServiceFuncionario extends GetxController {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      token = jsonDecode(response.body)['token'];
-      // print('Esse é o token: $token');
-      print('Login realizado com sucesso');
       final data = jsonDecode(response.body);
+      await saveToken(data['token']);
+      print('Login realizado com sucesso');
       print('Dados do funcionário: $data');
     } else {
       print('Erro ao fazer login: ${response.statusCode}');

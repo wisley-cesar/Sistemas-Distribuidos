@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:aeroporto/models/passageiros/passageiro_login_response.dart';
 import 'package:aeroporto/screens/home_screen/controllers/home_controller.dart';
 import 'package:aeroporto/widgets/my_card.dart';
 import 'package:aeroporto/widgets/my_info_row.dart';
+import 'package:aeroporto/screens/home_screen/widgets/loading_text.dart';
 
 class PassengerInfoCard extends StatelessWidget {
   final HomeController controller;
@@ -14,10 +14,28 @@ class PassengerInfoCard extends StatelessWidget {
     required this.controller,
   });
 
+  String _capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+
+    // Divide o texto em palavras
+    final words = text.split(' ');
+
+    // Capitaliza cada palavra
+    final capitalizedWords = words.map((word) {
+      if (word.isEmpty) return word;
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    });
+
+    // Junta as palavras novamente
+    return capitalizedWords.join(' ');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       final passageiro = controller.passageiro.value;
+      final isLoading = controller.isLoading.value;
+
       return MyCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,23 +68,45 @@ class PassengerInfoCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            MyInfoRow(
-              label: 'Nome',
-              value: passageiro?.nome ?? 'Carregando...',
-              icon: Icons.person_outline,
-            ),
-            const SizedBox(height: 16),
-            MyInfoRow(
-              label: 'CPF',
-              value: passageiro?.cpf ?? 'Carregando...',
-              icon: Icons.badge_outlined,
-            ),
-            const SizedBox(height: 16),
-            MyInfoRow(
-              label: 'Status do Check-in',
-              value: passageiro?.statusCheckIn ?? 'Carregando...',
-              icon: Icons.check_circle_outline,
-            ),
+            if (isLoading) ...[
+              LoadingText(
+                text: 'Carregando nome...',
+                fontSize: 16,
+                color: Colors.blue.shade700,
+              ),
+              const SizedBox(height: 16),
+              LoadingText(
+                text: 'Carregando CPF...',
+                fontSize: 16,
+                color: Colors.blue.shade700,
+              ),
+              const SizedBox(height: 16),
+              LoadingText(
+                text: 'Carregando status...',
+                fontSize: 16,
+                color: Colors.blue.shade700,
+              ),
+            ] else ...[
+              MyInfoRow(
+                label: 'Nome',
+                value: passageiro?.nome != null
+                    ? _capitalizeFirstLetter(passageiro!.nome)
+                    : 'Não disponível',
+                icon: Icons.person_outline,
+              ),
+              const SizedBox(height: 16),
+              MyInfoRow(
+                label: 'CPF',
+                value: passageiro?.cpf ?? 'Não disponível',
+                icon: Icons.badge_outlined,
+              ),
+              const SizedBox(height: 16),
+              MyInfoRow(
+                label: 'Status do Check-in',
+                value: passageiro?.statusCheckIn ?? 'Não disponível',
+                icon: Icons.check_circle_outline,
+              ),
+            ],
           ],
         ),
       );

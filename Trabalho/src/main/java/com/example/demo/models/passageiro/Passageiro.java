@@ -13,6 +13,8 @@ import lombok.Setter;
 public class Passageiro {
     private String id;
     private String nome;
+    private String email;
+    private String senha;
     private String cpf;
     private Voo idVoo;
     private StatusCheckIn statusCheckIn;
@@ -21,15 +23,19 @@ public class Passageiro {
 
     
 
-    public Passageiro(String id, String nome, String cpf, Voo idVoo, StatusCheckIn statusCheckIn) {
+    public Passageiro(String id, String nome, String email, String senha, String cpf, Voo idVoo, StatusCheckIn statusCheckIn) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
+        this.senha = senha;
         this.cpf = cpf;
         this.idVoo = idVoo;
         this.statusCheckIn = statusCheckIn;
     }
     public Passageiro(DadosCadastroPassageiro dados) {
         this.nome = dados.nome();
+        this.email = dados.email();
+        this.senha = dados.senha();
         this.cpf = dados.cpf();
         this.idVoo = dados.idVoo();
         this.statusCheckIn = dados.statusCheckIn();
