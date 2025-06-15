@@ -1,36 +1,56 @@
 package com.example.demo.controller;
 
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.passageiro.DadosAtualizacaoPassageiro;
 import com.example.demo.models.passageiro.DadosCadastroPassageiro;
+import com.example.demo.models.passageiro.DadosLoginPassageiro;
 import com.example.demo.models.passageiro.Passageiro;
 import com.example.demo.models.passageiro.PassageiroListagem;
+import com.example.demo.models.passageiro.RespostaLoginPassageiro;
 import com.example.demo.models.passageiro.StatusCheckIn;
 import com.example.demo.repository.PassageiroRepository;
 import com.example.demo.security.RequireAdmin;
+import com.example.demo.service.passageiro.PassageiroAuthService;
 import com.example.demo.service.passageiro.PassageiroService;
 
 import jakarta.validation.Valid;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/passageiros")
+@RequiredArgsConstructor
 public class PassageiroController {
 
     private final PassageiroRepository passageiroRepository;
     private final PassageiroService passageiroService;
+    private final PassageiroAuthService passageiroAuthService;
 
-    public PassageiroController(PassageiroRepository passageiroRepository, PassageiroService passageiroService) {
-        this.passageiroRepository = passageiroRepository;
-        this.passageiroService = passageiroService;
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody DadosLoginPassageiro dados) {
+        try {
+            RespostaLoginPassageiro resposta = passageiroAuthService.login(dados);
+            return ResponseEntity.ok(resposta);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping
-    @RequireAdmin
     public ResponseEntity<?> cadastrarPassageiro(@Valid @RequestBody DadosCadastroPassageiro dadosCadastro) {
         try {
             passageiroService.cadastrarPassageiro(dadosCadastro);
@@ -43,6 +63,17 @@ public class PassageiroController {
     @GetMapping
     public Page<PassageiroListagem> listarPage(Pageable pageable) {
         return passageiroRepository.findAll(pageable).map(PassageiroListagem::new);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable String id) {
+        try {
+            Passageiro passageiro = passageiroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Passageiro não encontrado"));
+            return ResponseEntity.ok(new PassageiroListagem(passageiro));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PatchMapping("/{id}/status-check-in")
